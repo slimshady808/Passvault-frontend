@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import {register} from '../Services/UserService'
+import {Toaster} from 'react-hot-toast'
+import {toast} from 'react-hot-toast'
 export const SignupPage = () => {
+  const navigate=useNavigate()
+  const [confirmPassword,setConfirmPassword]=useState('')
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -17,14 +21,34 @@ export const SignupPage = () => {
     });
   };
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your signup logic here
-    console.log(formData); // You can remove this line, it's just for testing
+    
+    if (!confirmPassword){
+      toast.error('please enter all fields')
+      return
+    }
+    if(formData.password!==confirmPassword){
+      toast.error('password is not mattching')
+      return
+    }
+    const response=await register(formData);
+    console.log(response)
+    if (response===201){
+      toast.success('register successfully')
+      navigate('/login')
+
+    }else{
+      toast.error('please enter all details')
+    }
+
+    
+    
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <Toaster position='top-center' reverseOrder='false' ></Toaster>
       <div className="bg-white p-8 rounded shadow-lg w-96">
         <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
         <form onSubmit={handleSubmit}>
@@ -70,8 +94,8 @@ const handleSubmit = (e) => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
+              // value={formData.confirmPassword}
+              onChange={(e)=>setConfirmPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               required
             />

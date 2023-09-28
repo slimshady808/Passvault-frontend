@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import {login} from '../../src/Services/UserService'
+import {Toaster} from 'react-hot-toast'
+import {toast} from 'react-hot-toast'
+import { getAccessToken } from '../helpers/Auth';
 export const LoginPage = () => {
+  
+  const navigate=useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,14 +20,30 @@ export const LoginPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log(formData); // You can remove this line, it's just for testing
+
+    const response= await login(formData)
+
+    if (response.status ===200){
+      const data=response.data
+      // console.log(data,'last')
+      localStorage.setItem('authToken',JSON.stringify(data))
+      const ac=getAccessToken()
+      console.log(ac,'ac')
+
+      toast.success('login successfully')
+      navigate('/')
+    }else{
+      toast.error('invalid credential')
+    }
+
+
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <Toaster position='top-center' reverseOrder='false' ></Toaster>
       <div className="bg-white p-8 rounded shadow-lg w-96">
         <h1 className="text-3xl font-bold mb-4">Login</h1>
         <form onSubmit={handleSubmit}>
