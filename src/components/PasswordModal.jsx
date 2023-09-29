@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-
+import { FiCopy } from "react-icons/fi";
+import {Toaster} from 'react-hot-toast'
+import {toast} from 'react-hot-toast'
 export const PasswordModal = () => {
   const [password, setPassword] = useState('');
   const [passwordLength, setPasswordLength] = useState(12);
@@ -8,17 +10,49 @@ export const PasswordModal = () => {
   const [includeNumbers, setIncludeNumbers] = useState(true);
   const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [websiteName, setWebsiteName] = useState(''); 
+  const [username,setUsername]=useState('')
   const generatePassword = () => {
-    // ... (same as your existing code)
-    console.log('generate',passwordLength,includeNumbers)
-    setPassword('now')
+    if (!includeLowercase && !includeUppercase && !includeNumbers && !includeSpecialChars) {
+      toast.error('Select at least one condition');
+      return;
+  }
+    const charset = (
+      (includeUppercase ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' : '') +
+      (includeLowercase ? 'abcdefghijklmnopqrstuvwxyz' : '') +
+      (includeNumbers ? '0123456789' : '') +
+      (includeSpecialChars ? '!@#$%^&*()_+[]{}|;:,.<>?~' : '')
+    );
+
+    let newPassword = '';
+    for (let i = 0; i < passwordLength; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      newPassword += charset[randomIndex];
+    }
+
+    setPassword(newPassword);
   };
 
+  const savePassword=()=>{
+    if (!password){
+      toast.error('please generate passowrd')
+      return
+    }
+    if (!websiteName || !username){
+      toast.error('enter website name and username')
+      return
+    }
+  }
+
   const copyToClipboard = () => {
-    // ... (same as your existing code)
-    console.log('copy')
-    setPassword('')
+    navigator.clipboard.writeText(password)
+      .then(() => {
+        toast.success('Password copied to clipboard');
+        // setPassword('');
+      })
+      .catch((error) => {
+        console.error('Failed to copy password: ', error);
+      });
   };
 
   const openModal = () => {
@@ -46,13 +80,23 @@ export const PasswordModal = () => {
 
             {/* Password Input Field */}
             <div className="mb-4">
+            <Toaster position='top-center' reverseOrder='false' ></Toaster>
               <label className="block text-sm font-medium">Generated Password:</label>
+              <div className="flex">
               <input
                 type="text"
-                className="w-full bg-gray-700 rounded px-3 py-2"
+                className="w-full bg-gray-700 rounded px-3 py-2 flex"
                 value={password}
                 readOnly
               />
+              <button
+                className="ml-2 px-3 py-2 bg-primary-700 hover:bg-primary-800 rounded text-white font-medium"
+                onClick={copyToClipboard}
+              >
+               <FiCopy/>
+              </button>
+            </div>
+
             </div>
 
             {/* Password Length Slider */}
@@ -133,6 +177,29 @@ export const PasswordModal = () => {
               </div>
             </div>
 
+            <div className='flex'>
+              <div className="mb-4 mr-4"> {/* Added mr-4 for spacing */}
+                <label className="block text-sm font-medium">Website Name:</label>
+                <input
+                  type="text"
+                  className="w-full bg-gray-700 rounded px-3 py-2"
+                  value={websiteName}
+                  onChange={(e) => setWebsiteName(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium">user Name:</label>
+                <input
+                  type="text"
+                  className="w-full bg-gray-700 rounded px-3 py-2"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+            </div>
+
+
             {/* Generate Button */}
             <button
               className="bg-blue-500 text-white w-full mb-4 px-4 py-2 rounded-md hover:bg-blue-600"
@@ -145,7 +212,7 @@ export const PasswordModal = () => {
             <div className="flex flex-col space-y-2">
               <button
                 className="bg-green-500 text-white w-full px-4 py-2 rounded-md hover:bg-green-600"
-                onClick={copyToClipboard}
+                onClick={savePassword}
               >
                 Save Password
               </button>
