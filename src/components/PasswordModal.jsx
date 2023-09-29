@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { FiCopy } from "react-icons/fi";
 import {Toaster} from 'react-hot-toast'
 import {toast} from 'react-hot-toast'
 import {savePassword} from '../Services/UserService'
-import { getAccessToken } from '../helpers/Auth';
-import jwt_decode from 'jwt-decode'
-import { useNavigate, useParams } from 'react-router-dom';
+
+import { useNavigate } from 'react-router-dom';
 export const PasswordModal = (props) => {
   const navigate = useNavigate()
   const { id } = props;
@@ -50,7 +49,7 @@ export const PasswordModal = (props) => {
       return
     }
 
-  if (id=='no'){
+  if (id==='no'){
     toast.error('please login')
     return
   }
@@ -63,7 +62,7 @@ export const PasswordModal = (props) => {
   }
   const response = await savePassword(data)
   if(response===201){
-    
+
     toast.success('saved')
     setModalVisible(false)
     setUsername('')

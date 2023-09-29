@@ -30,7 +30,7 @@ export const LoginPage = () => {
       // console.log(data,'last')
       localStorage.setItem('authToken',JSON.stringify(data))
       const ac=getAccessToken()
-      // console.log(ac,'ac')
+      console.log(ac,'ac')
 
       toast.success('login successfully')
       navigate('/')

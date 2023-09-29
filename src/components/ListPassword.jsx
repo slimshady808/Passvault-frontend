@@ -30,6 +30,7 @@ export const ListPassword = () => {
   const handleDelete = async(id)=>{
     const data = await deletePassword(id)
     toast.success('deleted')
+    console.log(data)
     setPassword(passwords.filter((password) => password.id !== id));
   }
 
