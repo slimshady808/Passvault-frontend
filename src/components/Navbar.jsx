@@ -47,7 +47,7 @@ export const Navbar = () => {
         </a>
         <div className="flex items-center">
           <a href="tel:5541251234" className="mr-6 text-sm text-gray-500 dark:text-white hover:underline"> {name ? name : ''}</a>
-          <a  className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+          <a href="#" className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
           onClick={name ? handleLogout : handleLogin}
           >{name ? 'logout':'login'}</a>
         </div>
