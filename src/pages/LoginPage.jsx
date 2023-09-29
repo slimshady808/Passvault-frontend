@@ -81,7 +81,7 @@ export const LoginPage = () => {
           </div>
         </form>
         <p className="text-gray-700">
-          Don't have an account? <a href="#"><Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500"> Signup</Link></a>
+          Don't have an account? <button ><Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500"> Signup</Link></button>
         </p>
       </div>
       

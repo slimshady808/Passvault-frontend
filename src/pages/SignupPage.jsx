@@ -110,7 +110,7 @@ const handleSubmit = async (e) => {
           </div>
         </form>
         <p className="text-gray-700">
-          Already have an account? <a href="#"><Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">  Login </Link></a>
+          Already have an account? <button><Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">  Login </Link></button>
           
         </p>
       </div>
