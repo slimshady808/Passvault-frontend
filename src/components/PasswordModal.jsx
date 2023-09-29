@@ -4,9 +4,8 @@ import {Toaster} from 'react-hot-toast'
 import {toast} from 'react-hot-toast'
 import {savePassword} from '../Services/UserService'
 
-import { useNavigate } from 'react-router-dom';
 export const PasswordModal = (props) => {
-  const navigate = useNavigate()
+ 
   const { id } = props;
   const [password, setPassword] = useState('');
   const [passwordLength, setPasswordLength] = useState(12);
