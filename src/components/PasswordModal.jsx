@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiCopy } from "react-icons/fi";
 import {Toaster} from 'react-hot-toast'
 import {toast} from 'react-hot-toast'
-export const PasswordModal = () => {
+import {savePassword} from '../Services/UserService'
+import { getAccessToken } from '../helpers/Auth';
+import jwt_decode from 'jwt-decode'
+import { useNavigate, useParams } from 'react-router-dom';
+export const PasswordModal = (props) => {
+  const navigate = useNavigate()
+  const { id } = props;
   const [password, setPassword] = useState('');
   const [passwordLength, setPasswordLength] = useState(12);
   const [includeUppercase, setIncludeUppercase] = useState(true);
@@ -12,6 +18,7 @@ export const PasswordModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [websiteName, setWebsiteName] = useState(''); 
   const [username,setUsername]=useState('')
+
   const generatePassword = () => {
     if (!includeLowercase && !includeUppercase && !includeNumbers && !includeSpecialChars) {
       toast.error('Select at least one condition');
@@ -33,7 +40,7 @@ export const PasswordModal = () => {
     setPassword(newPassword);
   };
 
-  const savePassword=()=>{
+  const handleSavePassword= async()=>{
     if (!password){
       toast.error('please generate passowrd')
       return
@@ -42,13 +49,41 @@ export const PasswordModal = () => {
       toast.error('enter website name and username')
       return
     }
+
+  if (id=='no'){
+    toast.error('please login')
+    return
   }
+  const data={
+    password:password,
+    username:username,
+    website:websiteName,
+    user:id
+  
+  }
+  const response = await savePassword(data)
+  if(response===201){
+    
+    toast.success('saved')
+    setModalVisible(false)
+    setUsername('')
+    setWebsiteName('')
+    // window.location.reload();
+    
+  }else{
+    toast.error('please try after some time')
+  }
+}
 
   const copyToClipboard = () => {
+    if (!password){
+      toast.error('generate password first')
+      return
+    }
     navigator.clipboard.writeText(password)
       .then(() => {
         toast.success('Password copied to clipboard');
-        // setPassword('');
+       
       })
       .catch((error) => {
         console.error('Failed to copy password: ', error);
@@ -56,6 +91,7 @@ export const PasswordModal = () => {
   };
 
   const openModal = () => {
+
     setModalVisible(true);
   };
 
@@ -76,7 +112,7 @@ export const PasswordModal = () => {
       {modalVisible && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 bg-black">
           <div className="bg-gray-800 text-white rounded-lg p-6 shadow-xl w-full max-w-md">
-            <h2 className="text-2xl font-semibold mb-4">Password Generator</h2>
+            <h2 className="text-2xl font-semibold mb-4">Password Generator{id}</h2>
 
             {/* Password Input Field */}
             <div className="mb-4">
@@ -212,7 +248,7 @@ export const PasswordModal = () => {
             <div className="flex flex-col space-y-2">
               <button
                 className="bg-green-500 text-white w-full px-4 py-2 rounded-md hover:bg-green-600"
-                onClick={savePassword}
+                onClick={handleSavePassword}
               >
                 Save Password
               </button>
