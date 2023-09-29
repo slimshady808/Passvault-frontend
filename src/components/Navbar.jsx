@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAccessToken, get_user_data } from '../helpers/Auth'
+import { getAccessToken } from '../helpers/Auth'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 export const Navbar = () => {
