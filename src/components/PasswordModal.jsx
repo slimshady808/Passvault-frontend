@@ -66,7 +66,7 @@ export const PasswordModal = (props) => {
     setModalVisible(false)
     setUsername('')
     setWebsiteName('')
-    // window.location.reload();
+    window.location.reload();
     
   }else{
     toast.error('please try after some time')

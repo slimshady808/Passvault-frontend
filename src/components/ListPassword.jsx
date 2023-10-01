@@ -36,17 +36,20 @@ export const ListPassword = () => {
 
 
   return (
-    <div className="flex flex-wrap justify-center">
-      {passwords.map((password, index) => (
-        <PasswordCard
-          key={index}
-          id ={password.id}
-          password={password.password}
-          username={password.username}
-          website={password.website}
-          onDelete={handleDelete}
-        />
-      ))}
-    </div>
+<div className="flex flex-wrap justify-center">
+
+<h1 className="text-4xl font-extrabold tracking-tight mb-8 text-center w-full"> {passwords.length > 0 ? 'Saved Passwords' : 'Please save passwords'}</h1>
+  {passwords.map((password, index) => (
+    <PasswordCard
+      key={index}
+      id={password.id}
+      password={password.password}
+      username={password.username}
+      website={password.website}
+      onDelete={handleDelete}
+    />
+  ))}
+</div>
+
   );
 };

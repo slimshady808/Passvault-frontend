@@ -6,8 +6,10 @@ import { ListPassword } from '../components/ListPassword'
 export const HomePage = () => {
   return (
     <>
+    
     <Navbar/>
       <Header/>
+  
       <ListPassword/>
     </>
   )
