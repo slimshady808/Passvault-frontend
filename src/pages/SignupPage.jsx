@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {register} from '../Services/UserService'
 import {Toaster} from 'react-hot-toast'
 import {toast} from 'react-hot-toast'
-import { getAccessToken } from '../helpers/Auth';
+// import { getAccessToken } from '../helpers/Auth';
 export const SignupPage = () => {
   const navigate=useNavigate()
   const [confirmPassword,setConfirmPassword]=useState('')
@@ -14,13 +14,13 @@ export const SignupPage = () => {
     confirmPassword: '',
   });
 
-  useEffect(()=>{
-    const token=getAccessToken()
-    if (token){
-      navigate('/')
+  // useEffect(()=>{
+  //   const token=getAccessToken()
+  //   if (token){
+  //     navigate('/')
 
-    }
-  })
+  //   }
+  // })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
