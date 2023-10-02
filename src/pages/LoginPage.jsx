@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {login} from '../../src/Services/UserService'
 import {Toaster} from 'react-hot-toast'
@@ -11,6 +11,14 @@ export const LoginPage = () => {
     email: '',
     password: '',
   });
+
+  useEffect(()=>{
+    const token=getAccessToken()
+    if (token){
+      navigate('/')
+
+    }
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,8 +37,8 @@ export const LoginPage = () => {
       const data=response.data
       // console.log(data,'last')
       localStorage.setItem('authToken',JSON.stringify(data))
-      const ac=getAccessToken()
-      console.log(ac,'ac')
+      // const ac=getAccessToken()
+      // console.log(ac,'ac')
 
       toast.success('login successfully')
       navigate('/')

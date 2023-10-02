@@ -9,29 +9,61 @@ export const ListPassword = () => {
   const [passwords,setPassword]=useState([])
   const [user,setUser]=useState('')
 
-  useEffect(()=>{
-    const fetchData = async()=>{
-      const token= await getAccessToken()
-      if (token){
-        const decode=jwt_decode(token)
-        setUser(decode.user_id)
-      const response=await fetchPassword(user)
-      if (response){
-        setPassword(response)
-      }
-      }else{
-        console.log('no token')
-      }
-    }
-    fetchData()
+  // useEffect(()=>{
+  //   const fetchData = async()=>{
+  //     const token= await getAccessToken()
+  //     if (token){
+  //       const decode=jwt_decode(token)
+  //       setUser(decode.user_id)
+  //     const response=await fetchPassword(user)
+  //     if (response){
+  //       setPassword(response)
+  //     }
+  //     }else{
+  //       // console.log('no token')
+  //     }
+  //   }
+  //   fetchData()
 
-  },[user])
+  // },[user])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await getAccessToken();
+      if (token) {
+        const decode = jwt_decode(token);
+        const userId = decode.user_id;
+        if (userId) {
+          setUser(userId);
+          // console.log(user)
+          const response = await fetchPassword(userId);
+          if (response) {
+            setPassword(response);
+          }
+        }
+      } else {
+        // console.log('no token')
+      }
+    };
+    fetchData();
+  }, [user]);
+  
 
   const handleDelete = async(id)=>{
-    const data = await deletePassword(id)
+   await deletePassword(id)
     toast.success('deleted')
-    console.log(data)
+    // console.log(data)
     setPassword(passwords.filter((password) => password.id !== id));
+  }
+  const handleCopy = async(password)=>{
+    navigator.clipboard.writeText(password)
+    .then(() => {
+      toast.success('Password copied to clipboard');
+     
+    })
+    .catch((error) => {
+      console.error('Failed to copy password: ', error);
+    });
   }
 
 
@@ -47,6 +79,7 @@ export const ListPassword = () => {
       username={password.username}
       website={password.website}
       onDelete={handleDelete}
+      onCopy={handleCopy}
     />
   ))}
 </div>

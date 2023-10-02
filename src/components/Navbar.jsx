@@ -13,10 +13,10 @@ export const Navbar = () => {
       const response = await getAccessToken(); // Use await to get the access token
       if (response) {
         const data=jwt_decode(response)
-        console.log(data);
+        // console.log(data);
         setName(data.username)
       } else {
-        console.log('no token');
+        // console.log('no token');
       }
     } catch (error) {
       console.error(error);
